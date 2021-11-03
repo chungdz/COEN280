@@ -41,7 +41,7 @@ public class QueryManager {
     
     public void connectToDB(){
         try{
-            Class.forName ("oracle.jdbc.driver.OracleDriver");
+            Class.forName (ccfg.connectionDriver);
         } catch (Exception E){
             System.err.println("Unable to load driver");
             E.printStackTrace();
@@ -87,6 +87,18 @@ public class QueryManager {
         return res;
     }
     
+    public int updateDB(String query){
+        int res = 0;
+        try{
+            res = s.executeUpdate(query);
+        } catch (SQLException E){
+            System.out.println("SQLException:" + E.getMessage());
+            System.out.println("SQLState:" + E.getSQLState());
+            System.out.println("VendorError:" + E.getErrorCode());
+        }
+        return res;
+    }
+    
     public void clostConnection(){
         try{
             C.close();
@@ -98,40 +110,64 @@ public class QueryManager {
     }
     
     public void ShowQuery(ResultSet res){
+        if(res == null){
+            System.out.println("No Result");
+            return;
+        }
         
+        try{
+            ResultSetMetaData resultsMetaData =res.getMetaData();
+            int columnCount =resultsMetaData.getColumnCount();
+            /* print header*/
+            for(int i = 1; i < columnCount + 1;++i){
+                System.out.print(resultsMetaData.getColumnName(i) + " ");
+            }
+            System.out.println();
+            /* print content*/
+            while(res.next()){
+                for(int i = 1; i < columnCount + 1;++i){
+                    System.out.print(res.getString(i) + " ");
+                }
+                System.out.println();
+            }
+        } catch (SQLException E){
+            System.out.println("SQLException:" + E.getMessage());
+            System.out.println("SQLState:" + E.getSQLState());
+            System.out.println("VendorError:" + E.getErrorCode());
+        }
     }
     
-//    public static void main(String [] Args){
-//        try{
-//            Class.forName ("oracle.jdbc.driver.OracleDriver");
-//        } catch (Exception E){
-//            System.err.println("Unable to load driver");
-//            E.printStackTrace();
-//        }
-//        try{
-//            Connection C = DriverManager.getConnection(
-//                "jdbc:oracle:thin:@localhost:1521:XE", 
-//                "oradb2", "oracle123"); // 
-//            DatabaseMetaData dbMetaData = C.getMetaData();
-//            String productName = dbMetaData.getDatabaseProductName();
-//            System.out.println(productName);
-//            String productVersion =dbMetaData.getDatabaseProductVersion();
-//            System.out.println(productVersion);
-//            Statement s = C.createStatement();
-//            s.executeQuery("select * from users");
-//            ResultSet res = s.getResultSet();
-//            if(res != null){
-//                while(res.next()){
-//                    String col1 = res.getString(1);
-//                    String col2 = res.getString(2);
-//                    System.out.println(col1 + " " + col2);
-//                }
-//            }
-//            C.close();
-//        } catch (SQLException E){
-//            System.out.println("SQLException:" + E.getMessage());
-//            System.out.println("SQLState:" + E.getSQLState());
-//            System.out.println("VendorError:" + E.getErrorCode());
-//        }
-//    }
+    public static void main(String [] Args){
+        try{
+            Class.forName ("oracle.jdbc.driver.OracleDriver");
+        } catch (Exception E){
+            System.err.println("Unable to load driver");
+            E.printStackTrace();
+        }
+        try{
+            Connection C = DriverManager.getConnection(
+                "jdbc:oracle:thin:@localhost:1521:XE", 
+                "oradb2", "oracle123"); // 
+            DatabaseMetaData dbMetaData = C.getMetaData();
+            String productName = dbMetaData.getDatabaseProductName();
+            System.out.println(productName);
+            String productVersion =dbMetaData.getDatabaseProductVersion();
+            System.out.println(productVersion);
+            Statement s = C.createStatement();
+            s.executeQuery("select * from users");
+            ResultSet res = s.getResultSet();
+            if(res != null){
+                while(res.next()){
+                    String col1 = res.getString(1);
+                    String col2 = res.getString(2);
+                    System.out.println(col1 + " " + col2);
+                }
+            }
+            C.close();
+        } catch (SQLException E){
+            System.out.println("SQLException:" + E.getMessage());
+            System.out.println("SQLState:" + E.getSQLState());
+            System.out.println("VendorError:" + E.getErrorCode());
+        }
+    }
 }
