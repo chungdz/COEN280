@@ -9,9 +9,9 @@
 
 CREATE TABLE Users (
     UserID varchar(30),
-    Yelp_since date, NOT NULL,
+    Yelp_since date NOT NULL,
     UName varchar(20) NOT NULL,
-    funny int, DEFAULT 0,
+    funny int DEFAULT 0,
     cool int DEFAULT 0,
     useful int DEFAULT 0,
     votes int DEFAULT 0,
@@ -37,7 +37,7 @@ CREATE TABLE Business (
 
 CREATE TABLE Categories (
     CName VARCHAR(30) NOT NULL,
-    PRIMARY KEY (CategoryID)
+    PRIMARY KEY (CName)
 );
 
 CREATE TABLE Subcategories (
@@ -58,16 +58,16 @@ CREATE Table Business_Subcategories(
     SubcName VARCHAR(30),
     PRIMARY KEY(BusinessID, SubcName),
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE,
-    FOREIGN KEY (SubcName) REFERENCES Business_Subcategories(SubcName) ON DELETE CASCADE
+    FOREIGN KEY (SubcName) REFERENCES Subcategories(SubcName) ON DELETE CASCADE
 );
 
 CREATE TABLE Review (
     ReviewID VARCHAR(30),
-    Stars INT CHECK (Rating > 0 and Rating < 6),
+    Stars INT CHECK (Stars > 0 and Stars < 6),
     Author VARCHAR(30),
     PublishDate Date,
     BusinessID  VARCHAR(30),
-    funny int, DEFAULT 0,
+    funny int DEFAULT 0,
     cool int DEFAULT 0,
     useful int DEFAULT 0,
     Votes int DEFAULT 0,
@@ -76,5 +76,9 @@ CREATE TABLE Review (
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
+CREATE INDEX INDEX1 ON User (Yelp_since);
+CREATE INDEX INDEX1 ON User (Votes);
+CREATE INDEX INDEX3 ON REVIEW (STARS);
+CREATE INDEX INDEX4 ON REVIEW (PublishDate);
 
 
