@@ -13,7 +13,7 @@ import JdbcConnect.QueryManager;
  */
 public class RunManager {
     public static void main(String [] Args){
-        QueryManager qm = new QueryManager("./src/JdbcConnect/connect_config.json");
+        QueryManager qm = new QueryManager("./config/connect_config.json");
         qm.connectToDB();
         qm.PrintDBMeta();
         System.out.println();

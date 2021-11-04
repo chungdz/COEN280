@@ -1,9 +1,0 @@
-{
-    "connectionDriver": "oracle.jdbc.driver.OracleDriver",
-    "connectHeader": "jdbc:oracle:thin:@",
-    "connectionPort": "1521",
-    "connectionHost": "localhost",
-    "dbName": "XE",
-    "username": "oradb2",
-    "password": "oracle123"
-}
