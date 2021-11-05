@@ -9,6 +9,7 @@
 
 DROP Table Checkin;
 DROP Table Review;
+DROP Table Business_Att;
 DROP Table Business_Subcategories;
 DROP Table Business_Categories;
 DROP Table Business;

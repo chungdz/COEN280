@@ -10,7 +10,7 @@ package Table_Generated;
  */
 public class SQLFormat {
     public String parseString(String origin){
-        String res = origin.replace("'", "''").replace("&", "||'&'||");
+        String res = origin.replace("'", "''").replace("&", "'||'&'||'");
         return res;
     }
 }

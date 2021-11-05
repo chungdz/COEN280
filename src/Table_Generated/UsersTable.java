@@ -4,7 +4,6 @@
  */
 package Table_Generated;
 import JdbcConnect.QueryManager;
-import Table_Generated.SQLFormat;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -68,7 +67,7 @@ public class UsersTable {
     }
     
     public void parseFile(String filePath){
-        ul = new ArrayList<Users>();
+        ul = new ArrayList<>();
         int tmp_index = 0;
         try{
             Scanner sc = new Scanner(new File(filePath));
@@ -86,7 +85,7 @@ public class UsersTable {
     }
     
     public void populateUsers(){
-        System.out.println(String.format("Delete %d rows" , qm.updateDB("Delete From Users")));
+        System.out.println(String.format("Delete %d rows from Users" , qm.updateDB("Delete From Users")));
         
         int insert_row = 0;
         for(int i = 0;i < ul.size();++i){
