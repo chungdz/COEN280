@@ -44,6 +44,13 @@ CREATE Table Business_Subcategories(
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
+CREATE Table Business_Att (
+    BusinessID VARCHAR(30),
+    AName VARCHAR(30),
+    PRIMARY KEY(BusinessID, AName),
+    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
+);
+
 CREATE TABLE Review (
     ReviewID VARCHAR(30),
     Stars INT CHECK (Stars > 0 and Stars < 6),
@@ -68,7 +75,17 @@ CREATE TABLE Checkin (
 
 CREATE INDEX INDEX1 ON Users (Yelp_since);
 CREATE INDEX INDEX2 ON Users (Votes);
+CREATE INDEX INDEX11 ON Users (Friends_num);
+CREATE INDEX INDEX12 ON Users (average_stars);
+CREATE INDEX INDEX13 ON Users (review_count);
 CREATE INDEX INDEX3 ON REVIEW (STARS);
 CREATE INDEX INDEX4 ON REVIEW (PublishDate);
+CREATE INDEX INDEX14 ON REVIEW (Votes);
+CREATE INDEX INDEX5 ON Business_Categories (CName);
+CREATE INDEX INDEX6 ON Business_Categories (BusinessID);
+CREATE INDEX INDEX7 On Business_Subcategories (SubCName);
+CREATE INDEX INDEX8 On Business_Subcategories (BusinessID);
+CREATE INDEX INDEX9 On Business_Att(AName);
+CREATE INDEX INDEX10 On Business_Att(BusinessID);
 
 
