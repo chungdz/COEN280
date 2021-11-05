@@ -7,6 +7,7 @@
  * Created: 2021年11月4日
  */
 
+
 CREATE TABLE Users (
     UserID varchar(30),
     Yelp_since date NOT NULL,
@@ -15,6 +16,8 @@ CREATE TABLE Users (
     cool int DEFAULT 0,
     useful int DEFAULT 0,
     votes int DEFAULT 0,
+    review_count int DEFAULT 0,
+    average_stars number DEFAULT 0,
     PRIMARY KEY (UserID)
 );
 
@@ -76,8 +79,15 @@ CREATE TABLE Review (
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
-CREATE INDEX INDEX1 ON User (Yelp_since);
-CREATE INDEX INDEX1 ON User (Votes);
+CREATE TABLE Checkin (
+    type varchar(10),
+    BusinessID VARCHAR(30),
+    info varchar(1000),
+    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
+);
+
+CREATE INDEX INDEX1 ON Users (Yelp_since);
+CREATE INDEX INDEX2 ON Users (Votes);
 CREATE INDEX INDEX3 ON REVIEW (STARS);
 CREATE INDEX INDEX4 ON REVIEW (PublishDate);
 
