@@ -21,6 +21,7 @@ class Business{
     String name;
     String Bstate;
     String city;
+    double stars;
     ArrayList<String> categories;
     ArrayList<String> subcate;
     ArrayList<String> att;
@@ -36,6 +37,7 @@ class Business{
         name = sf.parseString(bjson.getString("name"));
         Bstate = bjson.getString("state");
         city = bjson.getString("city");
+        stars = bjson.getDouble("stars");
         categories = new ArrayList<>();
         subcate = new ArrayList<>();
         att = new ArrayList<>();
@@ -86,8 +88,8 @@ class Business{
     }
     
     public String insertBusinessSQL(){
-        String res = String.format("INSERT INTO Business VALUES ('%s', '%s', '%s', '%s')", 
-        bID, name, city, Bstate);
+        String res = String.format("INSERT INTO Business VALUES ('%s', '%s', '%s', '%s', %f)", 
+        bID, name, city, Bstate, stars);
         return res;
     }
     

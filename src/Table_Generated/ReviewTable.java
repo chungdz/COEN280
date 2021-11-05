@@ -84,7 +84,7 @@ public class ReviewTable {
                 System.out.println(cur_sql);
             }
             insert_row += rows;
-            if(i % 10000 == 0){System.out.println("Review number: " + String.valueOf(i));}
+            if(i % 200000 == 0){System.out.println("Review number: " + String.valueOf(i));}
         }
         System.out.println(String.format("Insert %d rows", insert_row));
     }

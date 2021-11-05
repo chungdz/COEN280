@@ -33,6 +33,7 @@ CREATE TABLE Business (
     BusinessName VARCHAR(100) NOT NULL,
     City VARCHAR(30) NOT NULL,
     BState VARCHAR(10) NOT NULL,
+    Stars float DEFAULT 0, 
     PRIMARY KEY (BusinessID)
 );
 
