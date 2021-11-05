@@ -14,5 +14,4 @@ DROP Table Business_Categories;
 DROP Table Subcategories;
 DROP Table Categories;
 DROP Table Business;
-DROP Table Friends;
 DROP Table Users;

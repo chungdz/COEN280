@@ -18,14 +18,8 @@ CREATE TABLE Users (
     votes int DEFAULT 0,
     review_count int DEFAULT 0,
     average_stars float DEFAULT 0,
+    friends_num int DEFAULT 0,
     PRIMARY KEY (UserID)
-);
-
-CREATE TABLE Friends (
-    MainID varchar(30),
-    FriendID varchar(30),
-    PRIMARY KEY (MainID, FriendID),
-    FOREIGN KEY (MainID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
 CREATE TABLE Business (
