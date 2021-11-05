@@ -27,34 +27,21 @@ CREATE TABLE Business (
     BusinessName VARCHAR(50) NOT NULL,
     City VARCHAR(20) NOT NULL,
     BState VARCHAR(10) NOT NULL,
-    OPEN_NotOpen CHAR(1) NOT NULL,
     PRIMARY KEY (BusinessID)
-);
-
-CREATE TABLE Categories (
-    CName VARCHAR(30) NOT NULL,
-    PRIMARY KEY (CName)
-);
-
-CREATE TABLE Subcategories (
-    SubcName VARCHAR(30) NOT NULL,
-    PRIMARY KEY (SubcName)
 );
 
 CREATE Table Business_Categories (
     BusinessID VARCHAR(30),
     CName VARCHAR(30),
     PRIMARY KEY(BusinessID, CName),
-    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE,
-    FOREIGN KEY (CName) REFERENCES Categories(CName) ON DELETE CASCADE
+    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
 CREATE Table Business_Subcategories(
     BusinessID VARCHAR(30),
     SubcName VARCHAR(30),
     PRIMARY KEY(BusinessID, SubcName),
-    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE,
-    FOREIGN KEY (SubcName) REFERENCES Subcategories(SubcName) ON DELETE CASCADE
+    FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
 CREATE TABLE Review (
