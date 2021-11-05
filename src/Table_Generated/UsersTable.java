@@ -96,7 +96,7 @@ public class UsersTable {
                 System.out.println(cur_sql);
             }
             insert_row += rows;
-            if(i % 10000 == 0){System.out.println("User number: " + String.valueOf(i));}
+            if(i % 100000 == 0){System.out.println("User number: " + String.valueOf(i));}
         }
         System.out.println(String.format("Insert %d rows", insert_row));
     }
