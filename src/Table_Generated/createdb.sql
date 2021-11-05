@@ -11,13 +11,13 @@
 CREATE TABLE Users (
     UserID varchar(30),
     Yelp_since date NOT NULL,
-    UName varchar(20) NOT NULL,
+    UName varchar(40) NOT NULL,
     funny int DEFAULT 0,
     cool int DEFAULT 0,
     useful int DEFAULT 0,
     votes int DEFAULT 0,
     review_count int DEFAULT 0,
-    average_stars number DEFAULT 0,
+    average_stars float DEFAULT 0,
     PRIMARY KEY (UserID)
 );
 

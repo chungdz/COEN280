@@ -53,6 +53,7 @@ public class QueryManager {
                ccfg.connectionPort + ":" + ccfg.dbName,
                ccfg.username, ccfg.password);
             s = C.createStatement();
+//            C.setAutoCommit(true);
         } catch (SQLException E){
             System.out.println("SQLException:" + E.getMessage());
             System.out.println("SQLState:" + E.getSQLState());
@@ -91,6 +92,7 @@ public class QueryManager {
         int res = 0;
         try{
             res = s.executeUpdate(query);
+//            C.commit();
         } catch (SQLException E){
             System.out.println("SQLException:" + E.getMessage());
             System.out.println("SQLState:" + E.getSQLState());

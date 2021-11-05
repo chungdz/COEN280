@@ -7,12 +7,4 @@
  * Created: 2021年11月4日
  */
 
-DROP Table Checkin;
-DROP Table Review;
-DROP Table Business_Subcategories;
-DROP Table Business_Categories;
-DROP Table Subcategories;
-DROP Table Categories;
-DROP Table Business;
-DROP Table Friends;
-DROP Table Users;
+INSERT INTO USERS VALUES ('qtrmBGNqCvupHMHL_bKFgQ', TO_DATE('2012-02-01','YYYY-MM-DD'), Lee, 1, 0, 5, 6, 6, 3.8300000000000001);

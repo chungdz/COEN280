@@ -23,10 +23,10 @@ public class RunManager {
         res = qm.fetchQuery("select * from Business where ROWNUM <= 5");
         qm.ShowQuery(res);
         System.out.println();
-        int rows = qm.updateDB("Drop Table Test1");
+        int rows = qm.updateDB("Delete from Users");
         System.out.println(rows);
-        rows = qm.updateDB("Create Table Test1 (UserID varchar(10))");
-        System.out.println(rows);
+//        rows = qm.updateDB("Create Table Test1 (UserID varchar(10))");
+//        System.out.println(rows);
         qm.clostConnection();
     }
 }

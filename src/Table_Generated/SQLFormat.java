@@ -8,6 +8,9 @@ package Table_Generated;
  *
  * @author 10337
  */
-public class Populate_data {
-    
+public class SQLFormat {
+    public String parseString(String origin){
+        String res = origin.replace("'", "''");
+        return res;
+    }
 }
