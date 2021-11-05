@@ -25,8 +25,7 @@ CREATE TABLE Friends (
     MainID varchar(30),
     FriendID varchar(30),
     PRIMARY KEY (MainID, FriendID),
-    FOREIGN KEY (MainID) REFERENCES Users(UserID) ON DELETE CASCADE,
-    FOREIGN KEY (FriendID) REFERENCES Users(UserID) ON DELETE CASCADE
+    FOREIGN KEY (MainID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
 CREATE TABLE Business (

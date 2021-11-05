@@ -67,10 +67,19 @@ class Users{
                 userID, yelpSince, UName, funny, cool, useful, funny + cool + useful, reviewCount, averageStars);
         return res;
     }
+    
+    public ArrayList<String> insertFriendsSql(){
+        ArrayList<String> res_list = new ArrayList<String>();
+        for(String f: friends){
+            String res = String.format("INSERT INTO Friends VALUES ('%s', '%s')", userID, f);
+            res_list.add(res);
+        }
+        return res_list;
+    }
 }
 
 public class UsersTable {
-    ArrayList<Users> ul;
+    public ArrayList<Users> ul;
     QueryManager qm;
     
     public UsersTable(){
@@ -103,12 +112,31 @@ public class UsersTable {
         for(int i = 0;i < ul.size();++i){
             Users cu = ul.get(i);
             String cur_sql = cu.insertUserSql();
-//            System.out.println(cur_sql);
             int rows = qm.updateDB(cur_sql);
             if(rows == 0){
                 System.out.println(cur_sql);
             }
             insert_row += rows;
+            if(i % 10000 == 0){System.out.println("User number: " + String.valueOf(i));}
+        }
+        System.out.println(String.format("Insert %d rows", insert_row));
+    }
+    
+    public void populateFriends(){
+        System.out.println(String.format("Delete %d rows" , qm.updateDB("Delete From Friends")));
+        
+        int insert_row = 0;
+        for(int i = 0;i < ul.size();++i){
+            Users cu = ul.get(i);
+            ArrayList<String> cur_sqls = cu.insertFriendsSql();
+            for(String cur_sql: cur_sqls){
+                int rows = qm.updateDB(cur_sql);
+                if(rows == 0){
+                    System.out.println(cur_sql);
+                }
+                insert_row += rows;
+            }
+            if(i % 10000 == 0){System.out.println("User number: " + String.valueOf(i));}
         }
         System.out.println(String.format("Insert %d rows", insert_row));
     }
@@ -117,5 +145,6 @@ public class UsersTable {
         UsersTable ut = new UsersTable();
         ut.parseFile("./data/yelp_user.json");
         ut.populateUsers();
+        ut.populateFriends();
     }
 }
