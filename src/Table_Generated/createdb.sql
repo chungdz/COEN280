@@ -81,11 +81,12 @@ CREATE TABLE Review (
 CREATE INDEX INDEX3 ON REVIEW (STARS);
 CREATE INDEX INDEX4 ON REVIEW (PublishDate);
 CREATE INDEX INDEX14 ON REVIEW (Votes);
+CREATE INDEX INDEX15 ON REVIEW (BusinessID);
 
 CREATE TABLE Checkin (
-    type varchar(10),
+    ctype varchar(10),
     BusinessID VARCHAR(30),
-    info varchar(1000),
+    info varchar(1500),
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE
 );
 
