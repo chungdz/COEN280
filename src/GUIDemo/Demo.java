@@ -28,6 +28,9 @@ public class Demo extends JFrame {
     JScrollPane scrollPane1, scrollPane2, scrollPane3;
     JTable jt1;
     JButton jb1, jb2;
+    ArrayList<JDialog> jdf_list;
+    ArrayList<JTable> jt_list;
+    ArrayList<JScrollPane> jsp_list;
     
     private void print_list_1(){
         String res = "";
@@ -233,8 +236,11 @@ public class Demo extends JFrame {
         jt1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-               if (me.getClickCount() == 2) {     // to double click events
-                  System.out.println(jt1.getValueAt(jt1.getSelectedRow(), 0).toString());
+               if (me.getClickCount() == 2) {
+                  String BID = jt1.getValueAt(jt1.getSelectedRow(), 0).toString();
+                  String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
+                  System.out.println(BID + " " + BName);
+                  JTable curJt = popWindow(BName);
                }
             }
          });
@@ -282,6 +288,28 @@ public class Demo extends JFrame {
         return jb2;
     }
     
+    private JTable popWindow(String BName){
+        JDialog jdf1 = new JDialog();
+        Container cnt = jdf1.getContentPane();
+        
+        JTable curJt = new JTable(40, 5);
+        JScrollPane curScrollPane = new JScrollPane(curJt, 
+        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        cnt.add(curScrollPane);
+        curJt.revalidate();
+        
+        jdf1.setSize(1200, 500);
+        jdf1.setTitle("Review Table for " + BName);
+        jdf1.setVisible(true);
+        jdf1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        jdf_list.add(jdf1);
+        jt_list.add(curJt);
+        jsp_list.add(curScrollPane);
+        
+        return curJt;
+    }
+    
     public Demo() {
         qh = new QueryHandler();
         subcates = new HashSet<>();
@@ -301,7 +329,9 @@ public class Demo extends JFrame {
         container.add(queryUserButton());
 
         this.setSize(2000, 1000);
+        this.setTitle("Query Panel");
         this.setVisible(true);
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
     }
     
