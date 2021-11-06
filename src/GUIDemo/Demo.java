@@ -12,6 +12,7 @@ import java.util.*;
 import TableGenerated.Business;
 import java.awt.*;
 import java.sql.ResultSet;
+import java.awt.font.*;
 /**
  *
  * @author 10337
@@ -23,14 +24,16 @@ public class Demo extends JFrame {
     QueryHandler qh;
     
     Demo overallFrame;
-    JPanel jp1, jp2, jp3;
-    JComboBox<String> comboBoxBusiness;
+    JPanel jp1, jp2, jp3, jp4, jp5;
+    JComboBox<String> comboBoxBusiness, r1, r2;
     JScrollPane scrollPane1, scrollPane2, scrollPane3;
     JTable jt1;
     JButton jb1, jb2;
     ArrayList<JDialog> jdf_list;
     ArrayList<JTable> jt_list;
     ArrayList<JScrollPane> jsp_list;
+    JTextField jxf1, jxf2, jxf3, jxf4;
+    JLabel jl1, jl2, jl3, jl4;
     
     private void print_list_1(){
         String res = "";
@@ -188,7 +191,7 @@ public class Demo extends JFrame {
         String labels[] = {"AND", "OR"};
         comboBoxBusiness = new JComboBox<String>(labels);
         comboBoxBusiness.setEditable(true);
-        comboBoxBusiness.setBounds(0, 471, 1500, 25);
+        comboBoxBusiness.setBounds(0, 471, 1400, 25);
         comboBoxBusiness.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 JComboBox<String> cb = (JComboBox<String>) e.getSource();
@@ -226,9 +229,51 @@ public class Demo extends JFrame {
         
         scrollPane2 = new JScrollPane(jp3, 
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane2.setBounds(801, 0, 700, 470);
+        scrollPane2.setBounds(801, 0, 600, 470);
         jp3.revalidate();
         return scrollPane2;
+    }
+    
+    private JPanel reviewJP(){
+        jp4 = new JPanel();
+        jp4.setLayout(new GridLayout(0, 1));
+        jp4.setBounds(1401, 0, 300, 495);
+        jp4.setBackground(new java.awt.Color(153, 255, 204));
+        jp4.setBorder(new TitledBorder(new EtchedBorder(), "Review Option"));
+        
+        Font font1 = new Font("SansSerif", Font.BOLD, 18);
+        String labels[] = {"=", ">", "<"};
+        
+        jl1 = new JLabel("From Date YYYY-MM-DD");
+        jxf1 = new JTextField();
+        jxf1.setFont(font1);
+        jl2 = new JLabel("To Date YYYY-MM-DD");
+        jxf2 = new JTextField();
+        jxf2.setFont(font1);
+        
+        jl3 = new JLabel("Star range");
+        r1 = new JComboBox(labels);
+        jxf3 = new JTextField();
+        jxf3.setFont(font1);
+        
+        jl4 = new JLabel("Vote range");
+        r2 = new JComboBox(labels);
+        jxf4 = new JTextField();
+        jxf4.setFont(font1);
+        
+        jp4.add(jl1);
+        jp4.add(jxf1);
+        jp4.add(jl2);
+        jp4.add(jxf2);
+        jp4.add(jl3);
+        jp4.add(r1);
+        jp4.add(jxf3);
+        jp4.add(jl4);
+        jp4.add(r2);
+        jp4.add(jxf4);
+        
+        jp4.setVisible(true);
+        return jp4;
     }
     
     private JScrollPane firstjt(){
@@ -324,11 +369,12 @@ public class Demo extends JFrame {
         container.add(firstJcb());
         container.add(secondjp());
         container.add(thirdjp());
+        container.add(reviewJP());
         container.add(firstjt());
         container.add(queryBusinessButton());
         container.add(queryUserButton());
 
-        this.setSize(2000, 1000);
+        this.setSize(1700, 1000);
         this.setTitle("Query Panel");
         this.setVisible(true);
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH);
