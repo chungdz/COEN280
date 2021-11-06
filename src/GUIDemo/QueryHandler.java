@@ -22,7 +22,7 @@ public class QueryHandler {
         sf = new SQLFormat();
     }
     
-    public Vector<Vector> queryReview(Demo frameInfo){
+    public Vector<Vector> queryReview(hw3 frameInfo){
         ArrayList<String> conditions = new ArrayList();
         String DateFrom, DateTo, stars, voteCount;
         DateFrom = frameInfo.jxf1.getText();
@@ -59,7 +59,7 @@ public class QueryHandler {
         return qv;
     }
     
-    public Vector<Vector> queryBusiness(Demo frameInfo){
+    public Vector<Vector> queryBusiness(hw3 frameInfo){
         
         String BID_query;
         if(frameInfo.business_bool.equals("AND")){
@@ -91,7 +91,7 @@ public class QueryHandler {
         return qv;
     }
     
-    public ArrayList<String> queryForSecondBusiness(Demo frameInfo){
+    public ArrayList<String> queryForSecondBusiness(hw3 frameInfo){
         ArrayList<String> res = new ArrayList<>();
         
         String BID_query, BID2_query;
@@ -121,7 +121,7 @@ public class QueryHandler {
         return res;
     }
     
-    public ArrayList<String> queryForFirstBusiness(Demo frameInfo){
+    public ArrayList<String> queryForFirstBusiness(hw3 frameInfo){
         ArrayList<String> res = new ArrayList<>();
         if(frameInfo.category_selected.size() < 1){
             return res;
@@ -152,7 +152,7 @@ public class QueryHandler {
         return res;
     }
     
-    private String constructSqlANDForB1(Demo frameInfo){
+    private String constructSqlANDForB1(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String cate: frameInfo.category_selected){
             String res = String.format("SELECT DISTINCT BusinessID FROM Business_Categories" +
@@ -162,7 +162,7 @@ public class QueryHandler {
         return String.join(" INTERSECT ", res_list);
     }
     
-    private String constructSqlORForB1(Demo frameInfo){
+    private String constructSqlORForB1(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String cate: frameInfo.category_selected){
             String res = String.format("CNAME='%s'", sf.parseString(cate));
@@ -173,7 +173,7 @@ public class QueryHandler {
         return head + tail;
     }
     
-    private String constructSqlANDForB2(Demo frameInfo){
+    private String constructSqlANDForB2(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String subcate: frameInfo.subcates){
             String res = String.format("SELECT DISTINCT BusinessID FROM Business_Subcategories" +
@@ -183,7 +183,7 @@ public class QueryHandler {
         return String.join(" INTERSECT ", res_list);
     }
     
-    private String constructSqlORForB2(Demo frameInfo){
+    private String constructSqlORForB2(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String subcate: frameInfo.subcates){
             String res = String.format("SubCNAME='%s'", sf.parseString(subcate));
@@ -194,7 +194,7 @@ public class QueryHandler {
         return head + tail;
     }
     
-    private String constructSqlANDForAtt(Demo frameInfo){
+    private String constructSqlANDForAtt(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String attr: frameInfo.attributes){
             String res = String.format("SELECT DISTINCT BusinessID FROM Business_Att" +
@@ -204,7 +204,7 @@ public class QueryHandler {
         return String.join(" INTERSECT ", res_list);
     }
     
-    private String constructSqlORForAtt(Demo frameInfo){
+    private String constructSqlORForAtt(hw3 frameInfo){
         ArrayList<String> res_list = new ArrayList<>();
         for(String attr: frameInfo.attributes){
             String res = String.format("ANAME='%s'", sf.parseString(attr));
