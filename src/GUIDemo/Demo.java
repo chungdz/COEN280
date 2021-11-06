@@ -22,7 +22,9 @@ public class Demo extends JFrame {
     JFrame overallFrame;
     JPanel jp1, jp2, jp3;
     JComboBox<String> comboBoxBusiness;
-    JScrollPane scrollPane1, scrollPane2;
+    JScrollPane scrollPane1, scrollPane2, scrollPane3;
+    JTable jt1;
+    JButton jb1, jb2;
     
     private void print_list_1(){
         String res = "";
@@ -223,12 +225,33 @@ public class Demo extends JFrame {
         return scrollPane2;
     }
     
+    private JScrollPane firstjt(){
+        jt1 = new JTable(40, 5);
+        
+        scrollPane3 = new JScrollPane(jt1, 
+        JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane3.setBounds(0, 496, 1200, 485);
+        jt1.revalidate();
+        return scrollPane3;
+    }
+    
+    private JButton queryBusinessButton(){
+        jb1 = new JButton("Execute Query for Business");
+        jb1.setBounds(0, 980, 600, 20);
+        return jb1;
+    }
+    
+    private JButton queryUserButton(){
+        jb2 = new JButton("Execute Query for User");
+        jb2.setBounds(601, 980, 600, 20);
+        return jb2;
+    }
+    
     public Demo() {
         qh = new QueryHandler();
         subcates = new HashSet<>();
         attributes = new HashSet<>();
         overallFrame = this;
-        
         
         Container container = this.getContentPane();
         // 设置流布局管理器，2是右对齐，后两个参数分别为组件间的水平间隔和垂直间隔
@@ -238,6 +261,9 @@ public class Demo extends JFrame {
         container.add(firstJcb());
         container.add(secondjp());
         container.add(thirdjp());
+        container.add(firstjt());
+        container.add(queryBusinessButton());
+        container.add(queryUserButton());
 
         this.setSize(2000, 1000);
         this.setVisible(true);
