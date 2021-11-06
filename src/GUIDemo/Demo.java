@@ -20,7 +20,7 @@ import java.awt.font.*;
 public class Demo extends JFrame {
     ArrayList<JCheckBox> jb_list1;
     HashSet<String> category_selected, subcates, attributes;
-    String business_bool = "AND", user_bool = "AND";
+    String business_bool = "AND", user_bool = "AND", table_state="NULL";
     QueryHandler qh;
     
     Demo overallFrame;
@@ -40,6 +40,9 @@ public class Demo extends JFrame {
     String selectLabels[] = {"AND", "OR"};
     String rangeLabels[] = {"=", ">", "<"};
     
+    /*
+    print selected category keywords
+    */
     private void print_list_1(){
         String res = "";
         for(String s: category_selected){
@@ -48,6 +51,9 @@ public class Demo extends JFrame {
         System.out.println("category selected changes: " + res);
     }
     
+    /*
+    print selected subcategory keywords
+    */
     private void print_list_2(){
         String res = "";
         for(String s: subcates){
@@ -56,6 +62,9 @@ public class Demo extends JFrame {
         System.out.println("subcategory selected changes: " + res);
     }
     
+    /*
+    print selected attribute keywords
+    */
     private void print_list_3(){
         String res = "";
         for(String s: attributes){
@@ -63,11 +72,22 @@ public class Demo extends JFrame {
         }
         System.out.println("attribute selected changes: " + res);
     }
-    
+    /*
+    print review selected options
+    */
     private void printReviewOptions(){
-        
+        String states = "";
+        states += "Date from: " + jxf1.getText() + " to " + jxf2.getText();
+        states += " AND star " + r1.getSelectedItem().toString() + " " + jxf3.getText();
+        states += " AND vote " + r2.getSelectedItem().toString() + " " + jxf4.getText();
+        System.out.println(states);
     }
-    
+    /*
+    renew attribute panel
+    query for valid attributes
+    add check box for each attribute
+    add select listener for attributes change
+    */
     private void queryForB2(){
         jp3.removeAll();
         attributes.clear();
@@ -98,7 +118,12 @@ public class Demo extends JFrame {
         jp3.revalidate();
         overallFrame.repaint();
     }
-    
+    /*
+    renew subcategory panel
+    query for valid subcategories
+    add check box for each subcategory
+    add select listener for subcategories change
+    */
     private void queryForB1(){
         resetB3();
         jp2.removeAll();
@@ -131,18 +156,18 @@ public class Demo extends JFrame {
         jp2.revalidate();
         overallFrame.repaint();
     }
-    
+    /* reset attribute panel */
     private void resetB3(){
         jp3.removeAll();
         jp3.revalidate();
     }
-    
+    /* reset subcategory panel as well as attribute panel */
     private void resetB2(){
         resetB3();
         jp2.removeAll();
         jp2.revalidate();
     }
-        
+    /* reset category panel and subcategory panel as well as attribute panel */ 
     private void resetB1(){
         resetB2();
         category_selected.clear();
@@ -150,12 +175,16 @@ public class Demo extends JFrame {
             bt.setSelected(false);
         }
     }
-    
+    /* reset panels and repaint */
     private void resetAll(){
         resetB1();
         overallFrame.repaint();
     }
-    
+    /* 
+    add static category check box from 26 category list
+    add listener for all check box
+    call for queryForB1 when check boxes are changing
+    */
     private void add_button_first(JPanel jp){
         jb_list1 = new ArrayList<>();
         category_selected = new HashSet<>();
@@ -185,6 +214,7 @@ public class Demo extends JFrame {
         }
     }
     
+    /* JPanel init for category panel */
     private JPanel firstjp(){
         jp1 = new JPanel();
         jp1.setBounds(0, 0, 400, 475);
@@ -195,7 +225,10 @@ public class Demo extends JFrame {
         add_button_first(jp1);
         return jp1;
     }
-    
+    /* 
+    combo box init for one under category panel 
+    add listener for changing, when changing reset 3 panels
+    */
     private JComboBox<String> firstJcb(){
         comboBoxBusiness = new JComboBox(selectLabels);
         comboBoxBusiness.setEditable(true);
@@ -213,14 +246,14 @@ public class Demo extends JFrame {
         });
         return comboBoxBusiness;
     }
-    
+    /* combo box init for one under user panel */
     private JComboBox<String> UserJcb(){
         comboBoxUser = new JComboBox(selectLabels);
         comboBoxUser.setEditable(true);
         comboBoxUser.setBounds(1201, 981, 500, 20);
         return comboBoxUser;
     }
-    
+    /* JPanel init for subcatgeory panel, inside a JScrollPane */
     private JScrollPane secondjp(){
         jp2 = new JPanel();
         jp2.setVisible(true);
@@ -234,7 +267,7 @@ public class Demo extends JFrame {
         jp2.revalidate();
         return scrollPane1;
     }
-    
+    /* JPanel init for attribute panel, inside a JScrollPane */
     private JScrollPane thirdjp(){
         jp3 = new JPanel();
         jp3.setVisible(true);
@@ -248,7 +281,14 @@ public class Demo extends JFrame {
         jp3.revalidate();
         return scrollPane2;
     }
-    
+    /* JPanel init for review option panel
+    jxf1: Date from
+    jxf2: Date less than
+    r1: star operator
+    jxf3: star number
+    r2: vote operator
+    jxf4: vote number
+    */
     private JPanel reviewJP(){
         jp4 = new JPanel();
         jp4.setLayout(new GridLayout(0, 1));
@@ -285,7 +325,17 @@ public class Demo extends JFrame {
         jp4.setVisible(true);
         return jp4;
     }
-    
+    /* JPanel init for user option panel
+    jxfU2: date since
+    u1: review count operator
+    jxfU3: review count number
+    u2: friend number operator
+    jxfU4: friend number
+    u3: average star operator
+    jxfU5: average star
+    u4: vote number operator
+    jxfU6: vote number
+    */
     private JPanel UserJP(){
         jp5 = new JPanel();
         jp5.setLayout(new GridLayout(0, 2));
@@ -345,17 +395,24 @@ public class Demo extends JFrame {
         jp5.setVisible(true);
         return jp5;
     }
-    
+    /*
+    Table for both business and user query
+    inside a JscrollPane
+    pop out review table if double click business table rows for that business
+    */
     private JScrollPane firstjt(){
         jt1 = new JTable(40, 5);
         jt1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-               if (me.getClickCount() == 2) {
-                  String BID = jt1.getValueAt(jt1.getSelectedRow(), 0).toString();
-                  String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
-//                  System.out.println(BID + " " + BName);
-                  JTable curJt = popWindow(BName);
+               if (me.getClickCount() == 2 && table_state.equals("Business")) {
+                    String BID = jt1.getValueAt(jt1.getSelectedRow(), 0).toString();
+                    String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
+//                    System.out.println(BID + " " + BName);
+                    printReviewOptions();
+                    JTable curJt = popWindow(BName);
+                    
+                    curJt.getParent().repaint();
                }
             }
          });
@@ -366,7 +423,11 @@ public class Demo extends JFrame {
         jt1.revalidate();
         return scrollPane3;
     }
-    
+    /*
+    button for query business under table 
+    add listener when clicked start check and query
+    change table state
+    */
     private JButton queryBusinessButton(){
         jb1 = new JButton("Execute Query for Business");
         jb1.setBounds(0, 981, 600, 20);
@@ -390,19 +451,26 @@ public class Demo extends JFrame {
                         }
                     };
                     jt1.setModel(tableModel);
+                    table_state = "Business";
                     jt1.revalidate();
                     overallFrame.repaint();
                 }
             });
         return jb1;
     }
-    
+    /*
+    button for query business under table 
+    add listener when clicked start check and query
+    change table state
+    */
     private JButton queryUserButton(){
         jb2 = new JButton("Execute Query for User");
         jb2.setBounds(601, 981, 600, 20);
         return jb2;
     }
-    
+    /*
+    review window that will be poped out
+    */
     private JTable popWindow(String BName){
         JDialog jdf1 = new JDialog();
         Container cnt = jdf1.getContentPane();
@@ -416,15 +484,17 @@ public class Demo extends JFrame {
         jdf1.setSize(1200, 500);
         jdf1.setTitle("Review Table for " + BName);
         jdf1.setVisible(true);
-        jdf1.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        jdf_list.add(jdf1);
-        jt_list.add(curJt);
-        jsp_list.add(curScrollPane);
+        //        jdf_list.add(jdf1);
+        //        jt_list.add(curJt);
+        //        jsp_list.add(curScrollPane);
         
         return curJt;
     }
-    
+    /*
+    initialization for main JFrame
+    add all JPanel
+    */
     public Demo() {
         qh = new QueryHandler();
         subcates = new HashSet<>();
