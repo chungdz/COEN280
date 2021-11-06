@@ -26,6 +26,13 @@ public class Demo extends JFrame {
         System.out.println("category selected changes: " + res);
     }
     
+    private void resetAll(){
+        category_selected.clear();
+        for(var bt: jb_list1){
+            bt.setSelected(false);
+        }
+    }
+    
     private void add_button_first(JPanel jp){
         jb_list1 = new ArrayList<>();
         category_selected = new HashSet<>();
@@ -73,8 +80,12 @@ public class Demo extends JFrame {
         comboBox.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 JComboBox<String> cb = (JComboBox<String>) e.getSource();
-                business_bool = cb.getSelectedItem().toString();
-                System.out.println("Business select state changes to " + business_bool);
+                String cur_bool = cb.getSelectedItem().toString();
+                if(business_bool != cur_bool){
+                    business_bool = cur_bool;
+                    resetAll();
+                    System.out.println("Business select state changes to " + business_bool);
+                }
             }
         });
         return comboBox;
