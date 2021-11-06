@@ -24,14 +24,18 @@ class Review{
     int funny;
     int cool;
     int useful;
+    String rtext;
     
     public Review(String one_line){
+        SQLFormat sf = new SQLFormat();
         JSONObject rjson = new JSONObject(one_line);
         RID = rjson.getString("review_id");
         stars = rjson.getInt("stars");
         UID = rjson.getString("user_id");
         BID = rjson.getString("business_id");
         rdate = rjson.getString("date");
+        rtext = rjson.getString("text");
+        rtext = sf.parseString(rtext.substring(0, java.lang.Math.min(100, rtext.length())));
         JSONObject votes = rjson.getJSONObject("votes");
         funny = votes.getInt("funny");
         cool = votes.getInt("cool");
@@ -40,8 +44,8 @@ class Review{
     }
     
     public String insertReviewSql(){
-        String res = String.format("INSERT INTO Review VALUES ('%s', %d, '%s', TO_DATE('%s','YYYY-MM-DD'), '%s', %d)", 
-                RID, stars, UID, rdate, BID, funny + cool + useful);
+        String res = String.format("INSERT INTO Review VALUES ('%s', %d, '%s', TO_DATE('%s','YYYY-MM-DD'), '%s', %d, '%s')", 
+                RID, stars, UID, rdate, BID, funny + cool + useful, rtext);
         return res;
     }
 }

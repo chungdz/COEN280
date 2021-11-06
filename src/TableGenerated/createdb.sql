@@ -33,7 +33,8 @@ CREATE TABLE Business (
     BusinessName VARCHAR(100) NOT NULL,
     City VARCHAR(30) NOT NULL,
     BState VARCHAR(10) NOT NULL,
-    Stars float DEFAULT 0, 
+    Stars float DEFAULT 0,
+    OpenOrNot Char(1),
     PRIMARY KEY (BusinessID)
 );
 
@@ -74,6 +75,7 @@ CREATE TABLE Review (
     PublishDate Date,
     BusinessID  VARCHAR(30),
     Votes int DEFAULT 0,
+    rtext VARCHAR(300),
     PRIMARY KEY (ReviewID),
     FOREIGN KEY (Author) REFERENCES Users(UserID) ON DELETE SET NULL,
     FOREIGN KEY (BusinessID) REFERENCES Business(BusinessID) ON DELETE CASCADE

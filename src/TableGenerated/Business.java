@@ -22,6 +22,7 @@ public class Business{
     String Bstate;
     String city;
     double stars;
+    char op;
     ArrayList<String> categories;
     ArrayList<String> subcate;
     ArrayList<String> att;
@@ -38,6 +39,12 @@ public class Business{
         Bstate = bjson.getString("state");
         city = bjson.getString("city");
         stars = bjson.getDouble("stars");
+        if(bjson.getBoolean("open")){
+            op = 'T';
+        }
+        else{
+            op = 'F';
+        }
         categories = new ArrayList<>();
         subcate = new ArrayList<>();
         att = new ArrayList<>();
@@ -88,8 +95,8 @@ public class Business{
     }
     
     public String insertBusinessSQL(){
-        String res = String.format("INSERT INTO Business VALUES ('%s', '%s', '%s', '%s', %f)", 
-        bID, name, city, Bstate, stars);
+        String res = String.format("INSERT INTO Business VALUES ('%s', '%s', '%s', '%s', %f, '%c')", 
+        bID, name, city, Bstate, stars, op);
         return res;
     }
     
