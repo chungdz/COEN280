@@ -13,7 +13,7 @@ import java.util.*;
  * @author 10337
  */
 public class QueryHandler {
-    QueryManager qm;
+    public QueryManager qm;
     SQLFormat sf;
     
     public QueryHandler(){
@@ -22,11 +22,40 @@ public class QueryHandler {
         sf = new SQLFormat();
     }
     
+    public Vector<Vector> queryBusiness(Demo frameInfo){
+        
+        String BID_query;
+        if(frameInfo.business_bool.equals("AND")){
+            String B1_query = constructSqlANDForB1(frameInfo);
+            String B2_query = constructSqlANDForB2(frameInfo);
+            if(frameInfo.attributes.size() < 1){
+                BID_query = "(" + B1_query + ") INTERSECT (" + B2_query + ")";
+            }
+            else{
+                String B3_query = constructSqlANDForAtt(frameInfo);
+                BID_query = "(" + B1_query + ") INTERSECT (" + B2_query + ") INTERSECT (" + B3_query + ")";
+            }
+        }
+        else{
+            String B1_query = constructSqlORForB1(frameInfo);
+            String B2_query = constructSqlORForB2(frameInfo);
+            if(frameInfo.attributes.size() < 1){
+                BID_query = "(" + B1_query + ") INTERSECT (" + B2_query + ")";
+            }
+            else{
+                String B3_query = constructSqlORForAtt(frameInfo);
+                BID_query = "(" + B1_query + ") INTERSECT (" + B2_query + ") INTERSECT (" + B3_query + ")";
+            }
+        }
+        String final_q = "SELECT * FROM Business WHERE BusinessID IN(" + BID_query + ")";
+        ResultSet queryRes = qm.fetchQuery(final_q);
+        Vector<Vector> qv = qm.queryVector(queryRes);
+        System.out.println(final_q);
+        return qv;
+    }
+    
     public ArrayList<String> queryForSecondBusiness(Demo frameInfo){
         ArrayList<String> res = new ArrayList<>();
-        if(frameInfo.category_selected.size() < 1){
-            return res;
-        }
         
         String BID_query, BID2_query;
         if(frameInfo.business_bool.equals("AND")){
@@ -124,6 +153,27 @@ public class QueryHandler {
             res_list.add(res);
         }
         String head = "SELECT DISTINCT BusinessID FROM Business_Subcategories WHERE ";
+        String tail = String.join(" or ", res_list);
+        return head + tail;
+    }
+    
+    private String constructSqlANDForAtt(Demo frameInfo){
+        ArrayList<String> res_list = new ArrayList<>();
+        for(String attr: frameInfo.attributes){
+            String res = String.format("SELECT DISTINCT BusinessID FROM Business_Att" +
+                                            " WHERE ANAME='%s'", sf.parseString(attr));
+            res_list.add(res);
+        }
+        return String.join(" INTERSECT ", res_list);
+    }
+    
+    private String constructSqlORForAtt(Demo frameInfo){
+        ArrayList<String> res_list = new ArrayList<>();
+        for(String attr: frameInfo.attributes){
+            String res = String.format("ANAME='%s'", sf.parseString(attr));
+            res_list.add(res);
+        }
+        String head = "SELECT DISTINCT BusinessID FROM Business_Att WHERE ";
         String tail = String.join(" or ", res_list);
         return head + tail;
     }

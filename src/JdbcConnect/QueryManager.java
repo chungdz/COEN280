@@ -7,6 +7,7 @@ import java.sql.*;
 import com.google.gson.*;
 import java.io.*;
 import org.apache.commons.io.FileUtils;
+import java.util.*;
 /**
  *
  * @author 10337
@@ -118,8 +119,8 @@ public class QueryManager {
         }
         
         try{
-            ResultSetMetaData resultsMetaData =res.getMetaData();
-            int columnCount =resultsMetaData.getColumnCount();
+            ResultSetMetaData resultsMetaData = res.getMetaData();
+            int columnCount = resultsMetaData.getColumnCount();
             /* print header*/
             for(int i = 1; i < columnCount + 1;++i){
                 System.out.print(resultsMetaData.getColumnName(i) + " ");
@@ -137,6 +138,37 @@ public class QueryManager {
             System.out.println("SQLState:" + E.getSQLState());
             System.out.println("VendorError:" + E.getErrorCode());
         }
+    }
+    
+    public Vector<Vector> queryVector(ResultSet res){
+        Vector<Vector> tableVector = new Vector();
+        if(res == null){
+            System.out.println("No Result");
+            return tableVector;
+        }
+        
+        try{
+            ResultSetMetaData resultsMetaData = res.getMetaData();
+            int columnCount = resultsMetaData.getColumnCount();
+            
+            Vector columnNameVector = new Vector();
+            for(int i = 1; i < columnCount + 1;++i){
+                columnNameVector.add(resultsMetaData.getColumnName(i));
+            }
+            tableVector.add(columnNameVector);
+            while(res.next()){
+                Vector rowVector = new Vector();
+                for(int i = 1; i < columnCount + 1;++i){
+                    rowVector.add(res.getString(i));
+                }
+                tableVector.add(rowVector);
+            }
+        } catch (SQLException E){
+            System.out.println("SQLException:" + E.getMessage());
+            System.out.println("SQLState:" + E.getSQLState());
+            System.out.println("VendorError:" + E.getErrorCode());
+        }
+        return tableVector;
     }
     
     public static void main(String [] Args){

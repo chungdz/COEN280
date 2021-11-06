@@ -5,10 +5,13 @@
 package GUIDemo;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.table.*;
+import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.*;
 import TableGenerated.Business;
 import java.awt.*;
+import java.sql.ResultSet;
 /**
  *
  * @author 10337
@@ -19,7 +22,7 @@ public class Demo extends JFrame {
     String business_bool = "AND";
     QueryHandler qh;
     
-    JFrame overallFrame;
+    Demo overallFrame;
     JPanel jp1, jp2, jp3;
     JComboBox<String> comboBoxBusiness;
     JScrollPane scrollPane1, scrollPane2, scrollPane3;
@@ -227,6 +230,14 @@ public class Demo extends JFrame {
     
     private JScrollPane firstjt(){
         jt1 = new JTable(40, 5);
+        jt1.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+               if (me.getClickCount() == 2) {     // to double click events
+                  System.out.println(jt1.getValueAt(jt1.getSelectedRow(), 0).toString());
+               }
+            }
+         });
         
         scrollPane3 = new JScrollPane(jt1, 
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -238,6 +249,30 @@ public class Demo extends JFrame {
     private JButton queryBusinessButton(){
         jb1 = new JButton("Execute Query for Business");
         jb1.setBounds(0, 980, 600, 20);
+        jb1.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    System.out.println("Current condition for query:");
+                    print_list_1();
+                    print_list_2();
+                    print_list_3();
+                    if(category_selected.size() < 1 || subcates.size() < 1){
+                        System.out.println("Must select both category and subcategory:");
+                        return;
+                    }
+                    Vector<Vector> qv = qh.queryBusiness(overallFrame);
+                    Vector<Vector> qt = new Vector<Vector>(qv.subList(1, qv.size()));
+                    Vector qh = qv.get(0);
+                    DefaultTableModel tableModel = new DefaultTableModel(qt, qh){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                           return false;
+                        }
+                    };
+                    jt1.setModel(tableModel);
+                    jt1.revalidate();
+                    overallFrame.repaint();
+                }
+            });
         return jb1;
     }
     
