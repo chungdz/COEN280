@@ -22,6 +22,43 @@ public class QueryHandler {
         sf = new SQLFormat();
     }
     
+    public Vector<Vector> queryReview(Demo frameInfo){
+        ArrayList<String> conditions = new ArrayList();
+        String DateFrom, DateTo, stars, voteCount;
+        DateFrom = frameInfo.jxf1.getText();
+        if(!DateFrom.equals("")){
+            conditions.add(String.format("R.Publishdate >= To_date('%s', 'YYYY-MM-DD')", DateFrom));
+        }
+        DateTo = frameInfo.jxf2.getText();
+        if(!DateTo.equals("")){
+            conditions.add(String.format("R.Publishdate <= To_date('%s', 'YYYY-MM-DD')", DateTo));
+        }
+        stars = frameInfo.jxf3.getText();
+        if(!stars.equals("")){
+            int s = Integer.parseInt(stars);
+            String op = frameInfo.r1.getSelectedItem().toString();
+            conditions.add(String.format("R.STARS %s %d", op, s));
+        }
+        voteCount = frameInfo.jxf4.getText();
+        if(!voteCount.equals("")){
+            int v = Integer.parseInt(voteCount);
+            String op = frameInfo.r2.getSelectedItem().toString();
+            conditions.add(String.format("R.VOTES %s %d", op, v));
+        }
+        
+        String BID = frameInfo.jt1.getValueAt(frameInfo.jt1.getSelectedRow(), 0).toString();
+        String sql = String.format("SELECT R.STARS, R.PUBLISHDATE, R.VOTES, R.RTEXT, U.UNAME as Author FROM REVIEW R, Users U "
+                + "WHERE R.AUTHOR=U.USERID AND BusinessID='%s'", BID);
+        String final_q = sql;
+        if(conditions.size() > 0){
+            final_q = sql + " AND " + String.join(" AND ", conditions);
+        }
+        ResultSet queryRes = qm.fetchQuery(final_q);
+        Vector<Vector> qv = qm.queryVector(queryRes);
+        System.out.println(final_q);
+        return qv;
+    }
+    
     public Vector<Vector> queryBusiness(Demo frameInfo){
         
         String BID_query;

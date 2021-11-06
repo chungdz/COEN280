@@ -406,12 +406,21 @@ public class Demo extends JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                if (me.getClickCount() == 2 && table_state.equals("Business")) {
-                    String BID = jt1.getValueAt(jt1.getSelectedRow(), 0).toString();
                     String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
-//                    System.out.println(BID + " " + BName);
                     printReviewOptions();
                     JTable curJt = popWindow(BName);
                     
+                    Vector<Vector> qv = qh.queryReview(overallFrame);
+                    Vector<Vector> qt = new Vector<Vector>(qv.subList(1, qv.size()));
+                    Vector qh = qv.get(0);
+                    DefaultTableModel tableModel = new DefaultTableModel(qt, qh){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                           return false;
+                        }
+                    };
+                    curJt.setModel(tableModel);
+                    curJt.revalidate();
                     curJt.getParent().repaint();
                }
             }
