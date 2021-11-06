@@ -15,7 +15,7 @@ import java.awt.*;
  */
 public class Demo extends JFrame {
     ArrayList<JCheckBox> jb_list1;
-    HashSet<String> category_selected, subcates;
+    HashSet<String> category_selected, subcates, attributes;
     String business_bool = "AND";
     QueryHandler qh;
     
@@ -40,7 +40,47 @@ public class Demo extends JFrame {
         System.out.println("subcategory selected changes: " + res);
     }
     
+    private void print_list_3(){
+        String res = "";
+        for(String s: attributes){
+            res += s + ", ";
+        }
+        System.out.println("attribute selected changes: " + res);
+    }
+    
+    private void queryForB2(){
+        jp3.removeAll();
+        attributes.clear();
+        
+        ArrayList<String> att_arr = qh.queryForSecondBusiness(this);
+        Color color = jp3.getBackground();
+        for(String att: att_arr){
+            JCheckBox jCheckBox_cur = new JCheckBox(att);
+            jCheckBox_cur.setVisible(true);
+            jCheckBox_cur.setBackground(color);
+            jCheckBox_cur.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    AbstractButton abstractButton = (AbstractButton) evt.getSource();
+                    String cur_text = abstractButton.getText();
+                    boolean selected = abstractButton.getModel().isSelected();
+                    if(selected){
+                        attributes.add(cur_text);
+                    }
+                    else{
+                        attributes.remove(cur_text);
+                    }
+                    print_list_3();
+                }
+            });
+            jp3.add(jCheckBox_cur);
+        }
+        
+        jp3.revalidate();
+        overallFrame.repaint();
+    }
+    
     private void queryForB1(){
+        resetB3();
         jp2.removeAll();
         subcates.clear();
         
@@ -62,6 +102,7 @@ public class Demo extends JFrame {
                         subcates.remove(cur_text);
                     }
                     print_list_2();
+                    queryForB2();
                 }
             });
             jp2.add(jCheckBox_cur);
@@ -70,28 +111,29 @@ public class Demo extends JFrame {
         jp2.revalidate();
         overallFrame.repaint();
     }
-        
-    private void resetB1(){
-        category_selected.clear();
-        for(var bt: jb_list1){
-            bt.setSelected(false);
-        }
-    }
-    
-    private void resetB2(){
-        jp2.removeAll();
-        jp2.revalidate();
-    }
     
     private void resetB3(){
         jp3.removeAll();
         jp3.revalidate();
     }
     
-    private void resetAll(){
+    private void resetB2(){
         resetB3();
+        jp2.removeAll();
+        jp2.revalidate();
+    }
+        
+    private void resetB1(){
         resetB2();
+        category_selected.clear();
+        for(var bt: jb_list1){
+            bt.setSelected(false);
+        }
+    }
+    
+    private void resetAll(){
         resetB1();
+        overallFrame.repaint();
     }
     
     private void add_button_first(JPanel jp){
@@ -146,7 +188,6 @@ public class Demo extends JFrame {
                 if(business_bool != cur_bool){
                     business_bool = cur_bool;
                     resetAll();
-                    overallFrame.repaint();
                     System.out.println("Business select state changes to " + business_bool);
                 }
             }
@@ -185,6 +226,7 @@ public class Demo extends JFrame {
     public Demo() {
         qh = new QueryHandler();
         subcates = new HashSet<>();
+        attributes = new HashSet<>();
         overallFrame = this;
         
         
