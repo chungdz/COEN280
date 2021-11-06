@@ -20,12 +20,12 @@ import java.awt.font.*;
 public class Demo extends JFrame {
     ArrayList<JCheckBox> jb_list1;
     HashSet<String> category_selected, subcates, attributes;
-    String business_bool = "AND";
+    String business_bool = "AND", user_bool = "AND";
     QueryHandler qh;
     
     Demo overallFrame;
     JPanel jp1, jp2, jp3, jp4, jp5;
-    JComboBox<String> comboBoxBusiness, r1, r2;
+    JComboBox<String> comboBoxBusiness, comboBoxUser, r1, r2, u1, u2, u3, u4;
     JScrollPane scrollPane1, scrollPane2, scrollPane3;
     JTable jt1;
     JButton jb1, jb2;
@@ -33,7 +33,12 @@ public class Demo extends JFrame {
     ArrayList<JTable> jt_list;
     ArrayList<JScrollPane> jsp_list;
     JTextField jxf1, jxf2, jxf3, jxf4;
+    JTextField jxfU1, jxfU2, jxfU3, jxfU4, jxfU5, jxfU6;
     JLabel jl1, jl2, jl3, jl4;
+    JLabel jlU1, jlU2, jlU3, jlU4, jlU5, jlU6, jlU7, jlU8, jlU9, jlU10;
+    Font font1 = new Font("SansSerif", Font.BOLD, 18);
+    String selectLabels[] = {"AND", "OR"};
+    String rangeLabels[] = {"=", ">", "<"};
     
     private void print_list_1(){
         String res = "";
@@ -57,6 +62,10 @@ public class Demo extends JFrame {
             res += s + ", ";
         }
         System.out.println("attribute selected changes: " + res);
+    }
+    
+    private void printReviewOptions(){
+        
     }
     
     private void queryForB2(){
@@ -178,7 +187,7 @@ public class Demo extends JFrame {
     
     private JPanel firstjp(){
         jp1 = new JPanel();
-        jp1.setBounds(0, 0, 400, 470);
+        jp1.setBounds(0, 0, 400, 475);
         jp1.setVisible(true);
         jp1.setLayout(new GridLayout(0, 2));
         jp1.setBackground(new java.awt.Color(204, 204, 255));
@@ -188,15 +197,14 @@ public class Demo extends JFrame {
     }
     
     private JComboBox<String> firstJcb(){
-        String labels[] = {"AND", "OR"};
-        comboBoxBusiness = new JComboBox<String>(labels);
+        comboBoxBusiness = new JComboBox(selectLabels);
         comboBoxBusiness.setEditable(true);
-        comboBoxBusiness.setBounds(0, 471, 1400, 25);
+        comboBoxBusiness.setBounds(0, 476, 1400, 20);
         comboBoxBusiness.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
                 JComboBox<String> cb = (JComboBox<String>) e.getSource();
                 String cur_bool = cb.getSelectedItem().toString();
-                if(business_bool != cur_bool){
+                if(!business_bool.equals(cur_bool)){
                     business_bool = cur_bool;
                     resetAll();
                     System.out.println("Business select state changes to " + business_bool);
@@ -204,6 +212,13 @@ public class Demo extends JFrame {
             }
         });
         return comboBoxBusiness;
+    }
+    
+    private JComboBox<String> UserJcb(){
+        comboBoxUser = new JComboBox(selectLabels);
+        comboBoxUser.setEditable(true);
+        comboBoxUser.setBounds(1201, 981, 500, 20);
+        return comboBoxUser;
     }
     
     private JScrollPane secondjp(){
@@ -215,7 +230,7 @@ public class Demo extends JFrame {
         
         scrollPane1 = new JScrollPane(jp2, 
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane1.setBounds(401, 0, 400, 470);
+        scrollPane1.setBounds(401, 0, 400, 475);
         jp2.revalidate();
         return scrollPane1;
     }
@@ -229,7 +244,7 @@ public class Demo extends JFrame {
         
         scrollPane2 = new JScrollPane(jp3, 
         JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane2.setBounds(801, 0, 600, 470);
+        scrollPane2.setBounds(801, 0, 600, 475);
         jp3.revalidate();
         return scrollPane2;
     }
@@ -241,23 +256,18 @@ public class Demo extends JFrame {
         jp4.setBackground(new java.awt.Color(153, 255, 204));
         jp4.setBorder(new TitledBorder(new EtchedBorder(), "Review Option"));
         
-        Font font1 = new Font("SansSerif", Font.BOLD, 18);
-        String labels[] = {"=", ">", "<"};
-        
         jl1 = new JLabel("From Date YYYY-MM-DD");
         jxf1 = new JTextField();
         jxf1.setFont(font1);
         jl2 = new JLabel("To Date YYYY-MM-DD");
         jxf2 = new JTextField();
         jxf2.setFont(font1);
-        
-        jl3 = new JLabel("Star range");
-        r1 = new JComboBox(labels);
+        jl3 = new JLabel("Star ⭐⭐⭐⭐⭐ range");
+        r1 = new JComboBox(rangeLabels);
         jxf3 = new JTextField();
         jxf3.setFont(font1);
-        
-        jl4 = new JLabel("Vote range");
-        r2 = new JComboBox(labels);
+        jl4 = new JLabel("Vote ♥♥♥♥♥ range");
+        r2 = new JComboBox(rangeLabels);
         jxf4 = new JTextField();
         jxf4.setFont(font1);
         
@@ -276,6 +286,66 @@ public class Demo extends JFrame {
         return jp4;
     }
     
+    private JPanel UserJP(){
+        jp5 = new JPanel();
+        jp5.setLayout(new GridLayout(0, 2));
+        jp5.setBounds(1201, 496, 500, 485);
+        jp5.setBackground(new java.awt.Color(255, 255, 204));
+        jp5.setBorder(new TitledBorder(new EtchedBorder(), "User Option"));
+        
+        jlU1 = new JLabel("Member Since:");
+        jlU2 = new JLabel("Value: YYYY-MM-DD");
+        jxfU1 = new JTextField(">");
+        jxfU1.setEditable(false);
+        jxfU1.setFont(font1);
+        jxfU2 = new JTextField();
+        jxfU2.setFont(font1);
+        jlU3 = new JLabel("Review Count range");
+        jlU4 = new JLabel("Value: ");
+        u1 = new JComboBox(rangeLabels);
+        jxfU3 = new JTextField();
+        jxfU3.setFont(font1);
+        jlU5 = new JLabel("Number of friends range");
+        jlU6 = new JLabel("Value: ");
+        u2 = new JComboBox(rangeLabels);
+        jxfU4 = new JTextField();
+        jxfU4.setFont(font1);
+        jlU7 = new JLabel("Average Stars ⭐⭐⭐⭐⭐ range");
+        jlU8 = new JLabel("Value: ");
+        u3 = new JComboBox(rangeLabels);
+        jxfU5 = new JTextField();
+        jxfU5.setFont(font1);
+        jlU9 = new JLabel("Number of Votes ♥♥♥♥♥ range");
+        jlU10 = new JLabel("Value: ");
+        u4 = new JComboBox(rangeLabels);
+        jxfU6 = new JTextField();
+        jxfU6.setFont(font1);
+        
+        jp5.add(jlU1);
+        jp5.add(jlU2);
+        jp5.add(jxfU1);
+        jp5.add(jxfU2);
+        jp5.add(jlU3);
+        jp5.add(jlU4);
+        jp5.add(u1);
+        jp5.add(jxfU3);
+        jp5.add(jlU5);
+        jp5.add(jlU6);
+        jp5.add(u2);
+        jp5.add(jxfU4);
+        jp5.add(jlU7);
+        jp5.add(jlU8);
+        jp5.add(u3);
+        jp5.add(jxfU5);
+        jp5.add(jlU9);
+        jp5.add(jlU10);
+        jp5.add(u4);
+        jp5.add(jxfU6);
+        
+        jp5.setVisible(true);
+        return jp5;
+    }
+    
     private JScrollPane firstjt(){
         jt1 = new JTable(40, 5);
         jt1.addMouseListener(new MouseAdapter() {
@@ -284,7 +354,7 @@ public class Demo extends JFrame {
                if (me.getClickCount() == 2) {
                   String BID = jt1.getValueAt(jt1.getSelectedRow(), 0).toString();
                   String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
-                  System.out.println(BID + " " + BName);
+//                  System.out.println(BID + " " + BName);
                   JTable curJt = popWindow(BName);
                }
             }
@@ -299,7 +369,7 @@ public class Demo extends JFrame {
     
     private JButton queryBusinessButton(){
         jb1 = new JButton("Execute Query for Business");
-        jb1.setBounds(0, 980, 600, 20);
+        jb1.setBounds(0, 981, 600, 20);
         jb1.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                     System.out.println("Current condition for query:");
@@ -329,7 +399,7 @@ public class Demo extends JFrame {
     
     private JButton queryUserButton(){
         jb2 = new JButton("Execute Query for User");
-        jb2.setBounds(601, 980, 600, 20);
+        jb2.setBounds(601, 981, 600, 20);
         return jb2;
     }
     
@@ -373,6 +443,8 @@ public class Demo extends JFrame {
         container.add(firstjt());
         container.add(queryBusinessButton());
         container.add(queryUserButton());
+        container.add(UserJP());
+        container.add(UserJcb());
 
         this.setSize(1700, 1000);
         this.setTitle("Query Panel");
