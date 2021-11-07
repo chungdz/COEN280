@@ -22,6 +22,54 @@ public class QueryHandler {
         sf = new SQLFormat();
     }
     
+    public Vector<Vector> queryUser(hw3 frameInfo){
+        ArrayList<String> conditions = new ArrayList();
+        String DateFrom, reviewCount, friends, stars, voteCount, bu;
+        
+        DateFrom = frameInfo.jxfU2.getText();
+        if(!DateFrom.equals("")){
+            conditions.add(String.format("Yelp_Since > To_date('%s', 'YYYY-MM-DD')", DateFrom));
+        }
+        reviewCount = frameInfo.jxfU3.getText();
+        if(!reviewCount.equals("")){
+            int s = Integer.parseInt(reviewCount);
+            String op = frameInfo.u1.getSelectedItem().toString();
+            conditions.add(String.format("REVIEW_COUNT %s %d", op, s));
+        }
+        friends = frameInfo.jxfU4.getText();
+        if(!reviewCount.equals("")){
+            int s = Integer.parseInt(friends);
+            String op = frameInfo.u2.getSelectedItem().toString();
+            conditions.add(String.format("FRIENDS_NUM %s %d", op, s));
+        }
+        stars = frameInfo.jxfU5.getText();
+        if(!stars.equals("")){
+            double s = Double.parseDouble(stars);
+            String op = frameInfo.u3.getSelectedItem().toString();
+            conditions.add(String.format("AVERAGE_STARS %s %f", op, s));
+        }
+        voteCount = frameInfo.jxfU6.getText();
+        if(!voteCount.equals("")){
+            int v = Integer.parseInt(voteCount);
+            String op = frameInfo.u4.getSelectedItem().toString();
+            conditions.add(String.format("VOTES %s %d", op, v));
+        }
+        
+        String sql = "SELECT * FROM Users WHERE ";
+        String final_q;
+        if(conditions.size() > 0){
+            bu = frameInfo.comboBoxUser.getSelectedItem().toString();
+            final_q = sql + String.join(" " + bu + " ", conditions);
+        }
+        else{
+            final_q = sql + "ROWNUM <= 100";
+        }
+        ResultSet queryRes = qm.fetchQuery(final_q);
+        Vector<Vector> qv = qm.queryVector(queryRes);
+        System.out.println(final_q);
+        return qv;
+    }
+    
     public Vector<Vector> queryReview(hw3 frameInfo){
         ArrayList<String> conditions = new ArrayList();
         String DateFrom, DateTo, stars, voteCount;

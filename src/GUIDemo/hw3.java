@@ -82,6 +82,17 @@ public class hw3 extends JFrame {
         states += " AND vote " + r2.getSelectedItem().toString() + " " + jxf4.getText();
         System.out.println(states);
     }
+    /* print selected options for query users */
+    private void printUserOptions(){
+        String states = "";
+        String bu = comboBoxUser.getSelectedItem().toString();
+        states += "Date from: " + jxfU2.getText();
+        states += String.format(" %s review count %s %s", bu, u1.getSelectedItem().toString(), jxfU3.getText());
+        states += String.format(" %s friend number %s %s", bu, u2.getSelectedItem().toString(), jxfU4.getText());
+        states += String.format(" %s average stars %s %s", bu, u3.getSelectedItem().toString(), jxfU5.getText());
+        states += String.format(" %s vote number %s %s", bu, u4.getSelectedItem().toString(), jxfU6.getText());
+        System.out.println(states);
+    }
     /*
     renew attribute panel
     query for valid attributes
@@ -475,6 +486,24 @@ public class hw3 extends JFrame {
     private JButton queryUserButton(){
         jb2 = new JButton("Execute Query for User");
         jb2.setBounds(601, 981, 600, 20);
+        jb2.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    printUserOptions();
+                    Vector<Vector> qv = qh.queryUser(overallFrame);
+                    Vector<Vector> qt = new Vector<Vector>(qv.subList(1, qv.size()));
+                    Vector qh = qv.get(0);
+                    DefaultTableModel tableModel = new DefaultTableModel(qt, qh){
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                           return false;
+                        }
+                    };
+                    jt1.setModel(tableModel);
+                    table_state = "User";
+                    jt1.revalidate();
+                    overallFrame.repaint();
+                }
+            });
         return jb2;
     }
     /*
