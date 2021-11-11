@@ -416,12 +416,22 @@ public class hw3 extends JFrame {
         jt1.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-               if (me.getClickCount() == 2 && table_state.equals("Business")) {
-                    String BName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
-                    printReviewOptions();
-                    JTable curJt = popWindow(BName);
+               if (me.getClickCount() == 2) {
+                    String TName;
+                    Vector<Vector> qv;
+                    if(table_state.equals("Business")){
+                        TName = jt1.getValueAt(jt1.getSelectedRow(), 1).toString();
+                        qv = qh.queryReview(overallFrame);
+                    }
+                    else{
+                        TName = jt1.getValueAt(jt1.getSelectedRow(), 2).toString();
+                        qv = qh.queryUserReview(overallFrame);
+                    }
                     
-                    Vector<Vector> qv = qh.queryReview(overallFrame);
+                    printReviewOptions();
+                    JTable curJt = popWindow(TName);
+                    
+                    
                     Vector<Vector> qt = new Vector<Vector>(qv.subList(1, qv.size()));
                     Vector qh = qv.get(0);
                     DefaultTableModel tableModel = new DefaultTableModel(qt, qh){
@@ -509,7 +519,7 @@ public class hw3 extends JFrame {
     /*
     review window that will be poped out
     */
-    private JTable popWindow(String BName){
+    private JTable popWindow(String Name){
         JDialog jdf1 = new JDialog();
         Container cnt = jdf1.getContentPane();
         
@@ -520,7 +530,7 @@ public class hw3 extends JFrame {
         curJt.revalidate();
         
         jdf1.setSize(1200, 500);
-        jdf1.setTitle("Review Table for " + BName);
+        jdf1.setTitle("Review Table for " + Name);
         jdf1.setVisible(true);
         
         //        jdf_list.add(jdf1);
