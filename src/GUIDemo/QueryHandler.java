@@ -37,10 +37,11 @@ public class QueryHandler {
             conditions.add(String.format("REVIEW_COUNT %s %d", op, s));
         }
         friends = frameInfo.jxfU4.getText();
-        if(!reviewCount.equals("")){
+        if(!friends.equals("")){
             int s = Integer.parseInt(friends);
             String op = frameInfo.u2.getSelectedItem().toString();
             conditions.add(String.format("FRIENDS_NUM %s %d", op, s));
+            System.out.println(String.format("FRIENDS_NUM %s %d", op, s));
         }
         stars = frameInfo.jxfU5.getText();
         if(!stars.equals("")){
